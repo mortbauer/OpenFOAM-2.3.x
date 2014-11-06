@@ -106,6 +106,8 @@ class MRFZone
         //- Angular velocty (rad/sec)
         autoPtr<DataEntry<scalar> > omega_;
 
+        //- additional data
+        vectorField div_uu_half_;
 
     // Private Member Functions
 
@@ -212,6 +214,14 @@ public:
             (
                 const volScalarField& rho,
                 fvVectorMatrix& UEqn,
+                const bool rhs = false
+            ) const;
+
+            //- Add energy of reference frame to the enthalpy equation <-> rothalpy
+            void addRothalpy
+                (
+                const volScalarField& rho,
+                fvScalarMatrix& EEqn,
                 const bool rhs = false
             ) const;
 

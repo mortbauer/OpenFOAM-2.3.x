@@ -249,7 +249,8 @@ Foam::MRFZone::MRFZone
     ),
     origin_(coeffs_.lookup("origin")),
     axis_(coeffs_.lookup("axis")),
-    omega_(DataEntry<scalar>::New("omega", coeffs_))
+    omega_(DataEntry<scalar>::New("omega", coeffs_)),
+    div_uu_half_()
 {
     if (cellZoneName_ == word::null)
     {
@@ -314,6 +315,23 @@ Foam::MRFZone::MRFZone
         }
 
         setMRFFaces();
+
+        //- calculate div_uu_half_
+        const volVectorField& C = mesh_.C();
+
+        const vector Omega = this->Omega();
+
+        const labelList& cells = mesh_.cellZones()[cellZoneID_];
+        
+        div_uu_half_.resize(C.size());
+
+        forAll(cells, i)
+        {
+            label celli = cells[i];
+            div_uu_half_[celli] = ((Omega ^ (C[celli] - origin_)) ^ Omega);
+            //Info << "+++" << div_uu_half_[celli] << endl;
+        }
+
     }
 }
 
@@ -421,6 +439,46 @@ void Foam::MRFZone::addCoriolis
     }
 }
 
+void Foam::MRFZone::addRothalpy
+(
+    const volScalarField& rho,
+    fvScalarMatrix& EEqn,
+    const bool rhs
+) const
+{
+    if (cellZoneID_ == -1)
+    {
+        return;
+    }
+
+    const labelList& cells = mesh_.cellZones()[cellZoneID_];
+    const scalarField& V = mesh_.V();
+    scalarField& Esource = EEqn.source();
+    const scalarField& E = EEqn.psi();
+    const volVectorField& U = mesh_.lookupObject<volVectorField>("U");
+    const vector Omega = this->Omega();
+
+    Info << "adding rothalpy to e   equation " << endl;
+
+    if (rhs)
+    {
+        forAll(cells, i)
+        {
+            label celli = cells[i];
+            Esource[celli] -= V[celli]*rho[celli]*U[celli]&div_uu_half_[celli];
+        }
+    }
+    else
+    {
+        forAll(cells, i)
+        {
+            label celli = cells[i];
+            Esource[celli] += V[celli]*rho[celli]*U[celli]&div_uu_half_[celli];
+        }
+    }
+}
+
+
 
 void Foam::MRFZone::makeRelative(volVectorField& U) const
 {
@@ -429,6 +487,8 @@ void Foam::MRFZone::makeRelative(volVectorField& U) const
     const vector Omega = this->Omega();
 
     const labelList& cells = mesh_.cellZones()[cellZoneID_];
+
+    Info << "making velocity relative" << endl;
 
     forAll(cells, i)
     {
@@ -490,6 +550,7 @@ void Foam::MRFZone::makeAbsolute(volVectorField& U) const
 
     const labelList& cells = mesh_.cellZones()[cellZoneID_];
 
+    Info << "making velocity absolute" << endl;
     forAll(cells, i)
     {
         label celli = cells[i];
