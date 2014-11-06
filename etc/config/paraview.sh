@@ -35,8 +35,8 @@
 
 
 #- ParaView version, automatically determine major version
-export ParaView_VERSION=4.1.0
-export ParaView_MAJOR=4.1
+export ParaView_VERSION=4.2.0
+export ParaView_MAJOR=4.2
 
 
 paraviewInstDir=$WM_THIRD_PARTY_DIR/ParaView-$ParaView_VERSION
