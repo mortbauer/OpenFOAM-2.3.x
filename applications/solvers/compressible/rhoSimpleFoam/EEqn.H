@@ -13,27 +13,14 @@
             U
         );
     fvOptions.makeRelative(Urel);
-    surfaceScalarField phirel
-        (
-            IOobject
-            (
-                "phirel",
-                runTime.timeName(),
-                mesh,
-                IOobject::NO_READ,
-                IOobject::NO_WRITE
-            ),
-            phi
-        );
-    fvOptions.makeRelative(phirel);
 
     fvScalarMatrix EEqn
     (
-        fvm::div(phirel, he)
+        fvm::div(phi, he)
       + (
             he.name() == "e"
-          ? fvc::div(phirel, volScalarField("Ekp", 0.5*(magSqr(Urel) - magSqr(U-Urel))+ p/rho))
-          : fvc::div(phirel, volScalarField("K", 0.5*(magSqr(Urel) - magSqr(U-Urel))))
+          ? fvc::div(phi, volScalarField("Ekp", 0.5*(magSqr(Urel) - magSqr(U-Urel))+ p/rho))
+          : fvc::div(phi, volScalarField("K", 0.5*(magSqr(Urel) - magSqr(U-Urel))))
         )
       - fvm::laplacian(turbulence->alphaEff(), he)
      ==
