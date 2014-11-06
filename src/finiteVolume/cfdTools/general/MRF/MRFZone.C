@@ -431,8 +431,6 @@ void Foam::MRFZone::makeRelative(volVectorField& U) const
 
     const labelList& cells = mesh_.cellZones()[cellZoneID_];
 
-    Info << "making velocity relative" << endl;
-
     forAll(cells, i)
     {
         label celli = cells[i];
@@ -493,7 +491,6 @@ void Foam::MRFZone::makeAbsolute(volVectorField& U) const
 
     const labelList& cells = mesh_.cellZones()[cellZoneID_];
 
-    Info << "making velocity absolute" << endl;
     forAll(cells, i)
     {
         label celli = cells[i];
