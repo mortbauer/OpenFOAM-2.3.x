@@ -80,6 +80,7 @@ protected:
         word UName_;
 
 
+
     // Protected Member Functions
 
         //- Initialise
@@ -148,6 +149,9 @@ public:
             //- Make the given absolute flux relative
             virtual void makeRelative(surfaceScalarField& phi) const;
 
+            //- Make the given absolute velocity relative within the MRF region
+            virtual void makeRelative(volVectorField& U) const;
+
             //- Make the given absolute boundary flux relative
             virtual void makeRelative
             (
@@ -163,6 +167,9 @@ public:
 
             //- Make the given relative flux absolute
             virtual void makeAbsolute(surfaceScalarField& phi) const;
+
+            //- Make the given relative velocity absolute within the MRF region
+            virtual void makeAbsolute(volVectorField& U) const;
 
             //- Make the given relative mass-flux absolute
             virtual void makeAbsolute

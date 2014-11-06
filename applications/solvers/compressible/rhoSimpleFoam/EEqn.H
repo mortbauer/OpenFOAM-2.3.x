@@ -1,13 +1,39 @@
 {
     volScalarField& he = thermo.he();
+    volVectorField Urel
+        (
+            IOobject
+            (
+                "Urel",
+                runTime.timeName(),
+                mesh,
+                IOobject::NO_READ,
+                IOobject::NO_WRITE
+            ),
+            U
+        );
+    fvOptions.makeRelative(Urel);
+    surfaceScalarField phirel
+        (
+            IOobject
+            (
+                "phirel",
+                runTime.timeName(),
+                mesh,
+                IOobject::NO_READ,
+                IOobject::NO_WRITE
+            ),
+            phi
+        );
+    fvOptions.makeRelative(phirel);
 
     fvScalarMatrix EEqn
     (
-        fvm::div(phi, he)
+        fvm::div(phirel, he)
       + (
             he.name() == "e"
-          ? fvc::div(phi, volScalarField("Ekp", 0.5*magSqr(U) + p/rho))
-          : fvc::div(phi, volScalarField("K", 0.5*magSqr(U)))
+          ? fvc::div(phirel, volScalarField("Ekp", 0.5*(magSqr(Urel) - magSqr(U-Urel))+ p/rho))
+          : fvc::div(phirel, volScalarField("K", 0.5*(magSqr(Urel) - magSqr(U-Urel))))
         )
       - fvm::laplacian(turbulence->alphaEff(), he)
      ==
@@ -23,4 +49,6 @@
     fvOptions.correct(he);
 
     thermo.correct();
+
+
 }

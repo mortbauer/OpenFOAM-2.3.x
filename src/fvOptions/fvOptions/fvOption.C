@@ -615,6 +615,10 @@ void Foam::fv::option::makeRelative(surfaceScalarField& phi) const
     // do nothing
 }
 
+void Foam::fv::option::makeRelative(volVectorField& phi) const
+{
+    // do nothing
+}
 
 void Foam::fv::option::makeRelative
 (
@@ -640,6 +644,11 @@ void Foam::fv::option::makeAbsolute(surfaceScalarField& phi) const
     // do nothing
 }
 
+
+void Foam::fv::option::makeAbsolute(volVectorField& phi) const
+{
+    // do nothing
+}
 
 void Foam::fv::option::makeAbsolute
 (
