@@ -148,7 +148,6 @@ void Foam::fv::optionList::makeRelative(volVectorField& phi) const
 {
     forAll(*this, i)
     {
-        Info << "making relative for zone: " << i << endl;
         this->operator[](i).makeRelative(phi);
     }
 }

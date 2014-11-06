@@ -73,8 +73,7 @@ void Foam::fv::MRFSource::initialise()
     mrfPtr_->correctBoundaryVelocity(const_cast<volVectorField&>(U));
 
     fieldNames_.append(UName_);
-    fieldNames_.append("e");
-    applied_.setSize(2, false);
+    applied_.setSize(1, false);
 }
 
 
