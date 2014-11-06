@@ -1,30 +1,24 @@
 {
     volScalarField& he = thermo.he();
-    volVectorField Urel
-        (
-            IOobject
-            (
-                "Urel",
-                runTime.timeName(),
-                mesh,
-                IOobject::NO_READ,
-                IOobject::NO_WRITE
-            ),
-            U
-        );
+
+    Urel == U;
     fvOptions.makeRelative(Urel);
+    phirel == phi;
+    fvOptions.makeRelative(phirel);
 
     fvScalarMatrix EEqn
     (
-        fvm::div(phi, he)
+        fvm::div(phirel, he)
       + (
             he.name() == "e"
-          ? fvc::div(phi, volScalarField("Ekp", 0.5*(magSqr(Urel) - magSqr(U-Urel))+ p/rho))
-          : fvc::div(phi, volScalarField("K", 0.5*(magSqr(Urel) - magSqr(U-Urel))))
+          ? fvc::div(phirel, volScalarField("Ekp", 0.5*(magSqr(Urel) - magSqr(U-Urel))+ p/rho))
+          : fvc::div(phirel, volScalarField("K", 0.5*(magSqr(Urel) - magSqr(U-Urel))))
         )
       - fvm::laplacian(turbulence->alphaEff(), he)
      ==
         fvOptions(rho, he)
+        // Viscous heating: note sign (devRhoReff has a minus in it)
+      - (turbulence->devRhoReff() && fvc::grad(Urel))
     );
 
     EEqn.relax();
@@ -36,6 +30,4 @@
     fvOptions.correct(he);
 
     thermo.correct();
-
-
 }

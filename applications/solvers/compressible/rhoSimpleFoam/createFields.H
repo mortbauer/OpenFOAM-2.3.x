@@ -60,3 +60,29 @@
     );
 
     dimensionedScalar initialMass = fvc::domainIntegrate(rho);
+
+    volVectorField Urel
+        (
+            IOobject
+            (
+                "Urel",
+                runTime.timeName(),
+                mesh,
+                IOobject::NO_READ,
+                IOobject::AUTO_WRITE
+            ),
+            U
+        );
+
+   surfaceScalarField phirel
+        (
+            IOobject
+            (
+                "phirel",
+                runTime.timeName(),
+                mesh,
+                IOobject::NO_READ,
+                IOobject::NO_WRITE
+            ),
+            phi
+        );
