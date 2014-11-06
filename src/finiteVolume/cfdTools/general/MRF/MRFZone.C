@@ -249,7 +249,7 @@ Foam::MRFZone::MRFZone
     ),
     origin_(coeffs_.lookup("origin")),
     axis_(coeffs_.lookup("axis")),
-    omega_(DataEntry<scalar>::New("omega", coeffs_)),
+    omega_(DataEntry<scalar>::New("omega", coeffs_))
 {
     if (cellZoneName_ == word::null)
     {
