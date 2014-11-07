@@ -1,0 +1,3 @@
+[submodule "applications/utilities/mesh/conversion/foamMeshToMED"]
+	path = applications/utilities/mesh/conversion/foamMeshToMED
+	url = git@github.com:mortbauer/foamMeshToMED.git
