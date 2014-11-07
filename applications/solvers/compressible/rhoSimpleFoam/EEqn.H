@@ -27,7 +27,16 @@
 
     EEqn.solve();
 
+    volScalarField Cp = thermo.Cp();
+    he = Foam::min(he, TMax*Cp);
+    he = Foam::max(he, TMin*Cp);
+    he.correctBoundaryConditions();
+
     fvOptions.correct(he);
 
     thermo.correct();
+
+    Info<< "T max/min : "
+        << max(he/Cp).value() << " "
+        << min(he/Cp).value() << endl;
 }

@@ -60,6 +60,7 @@ int main(int argc, char *argv[])
 
         // Pressure-velocity SIMPLE corrector
         {
+            #include "readFieldsBounds.H"
             #include "UEqn.H"
             #include "EEqn.H"
             #include "pEqn.H"
