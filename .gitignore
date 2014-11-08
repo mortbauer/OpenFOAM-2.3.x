@@ -59,10 +59,10 @@ doc/Doxygen/DTAGS
 /doc/*.html
 
 # untracked configuration files
-/etc/prefs.csh
-/etc/prefs.sh
-/etc/config/prefs.csh
-/etc/config/prefs.sh
+#/etc/prefs.csh
+#/etc/prefs.sh
+#/etc/config/prefs.csh
+#/etc/config/prefs.sh
 
 # source packages - anywhere
 *.tar.bz2
