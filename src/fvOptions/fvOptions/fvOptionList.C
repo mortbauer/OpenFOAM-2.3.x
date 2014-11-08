@@ -144,6 +144,15 @@ void Foam::fv::optionList::makeRelative(surfaceScalarField& phi) const
     }
 }
 
+void Foam::fv::optionList::makeRelative(volVectorField& phi) const
+{
+    forAll(*this, i)
+    {
+        this->operator[](i).makeRelative(phi);
+    }
+}
+
+
 
 void Foam::fv::optionList::makeRelative
 (
@@ -183,6 +192,13 @@ void Foam::fv::optionList::makeAbsolute(surfaceScalarField& phi) const
     }
 }
 
+void Foam::fv::optionList::makeAbsolute(volVectorField& phi) const
+{
+    forAll(*this, i)
+    {
+        this->operator[](i).makeAbsolute(phi);
+    }
+}
 
 void Foam::fv::optionList::makeAbsolute
 (

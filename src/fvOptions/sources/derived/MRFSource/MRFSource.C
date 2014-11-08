@@ -72,7 +72,7 @@ void Foam::fv::MRFSource::initialise()
 
     mrfPtr_->correctBoundaryVelocity(const_cast<volVectorField&>(U));
 
-    fieldNames_.setSize(1, UName_);
+    fieldNames_.append(UName_);
     applied_.setSize(1, false);
 }
 
@@ -125,6 +125,10 @@ void Foam::fv::MRFSource::makeRelative(surfaceScalarField& phi) const
     mrfPtr_->makeRelative(phi);
 }
 
+void Foam::fv::MRFSource::makeRelative(volVectorField& phi) const
+{
+    mrfPtr_->makeRelative(phi);
+}
 
 void Foam::fv::MRFSource::makeRelative
 (
@@ -150,6 +154,10 @@ void Foam::fv::MRFSource::makeAbsolute(surfaceScalarField& phi) const
     mrfPtr_->makeAbsolute(phi);
 }
 
+void Foam::fv::MRFSource::makeAbsolute(volVectorField& phi) const
+{
+    mrfPtr_->makeAbsolute(phi);
+}
 
 void Foam::fv::MRFSource::makeAbsolute
 (

@@ -314,6 +314,7 @@ Foam::MRFZone::MRFZone
         }
 
         setMRFFaces();
+
     }
 }
 

@@ -180,6 +180,9 @@ public:
             //- Make the given absolute flux relative
             void makeRelative(surfaceScalarField& phi) const;
 
+            //- Make the given absolute velocity relative within the MRF region
+            void makeRelative(volVectorField& U) const;
+
             //- Make the given absolute mass-flux relative
             void makeRelative
             (
@@ -195,6 +198,9 @@ public:
 
             //- Make the given relative flux absolute
             void makeAbsolute(surfaceScalarField& phi) const;
+
+            //- Make the given relative velocity absolute within the MRF region
+            void makeAbsolute(volVectorField& U) const;
 
             //- Make the given relative mass-flux absolute
             void makeAbsolute

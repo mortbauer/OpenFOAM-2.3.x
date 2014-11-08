@@ -106,7 +106,6 @@ class MRFZone
         //- Angular velocty (rad/sec)
         autoPtr<DataEntry<scalar> > omega_;
 
-
     // Private Member Functions
 
         //- Divide faces in frame according to patch
