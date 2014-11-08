@@ -4,7 +4,7 @@ sinclude $(RULES)/mplib$(WM_MPLIB)
 EXE_INC = \
     $(PFLAGS) $(PINC) \
     -I$(SCOTCH_ROOT)/include \
-    -I$(SCOTCH_ARCH_PATH)/include/$(FOAM_MPI) \
+    -I$(SCOTCH_ARCH_PATH)/include \
     -I/usr/include/scotch \
     -I../decompositionMethods/lnInclude
 
