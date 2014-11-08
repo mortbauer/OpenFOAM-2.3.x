@@ -1,3 +1,6 @@
 [submodule "applications/utilities/mesh/conversion/foamMeshToMED"]
 	path = applications/utilities/mesh/conversion/foamMeshToMED
 	url = git@github.com:mortbauer/foamMeshToMED.git
+[submodule "etc"]
+	path = etc
+	url = file:///home/martin/OpenFOAM/etc-2.3.x/
