@@ -142,6 +142,15 @@ public:
                 fvMatrix<vector>& eqn,
                 const label fieldI
             );
+            //
+            //- Vector
+            virtual void addSup
+            (
+                const volScalarField& rho,
+                fvMatrix<scalar>& eqn,
+                const label fieldI
+            );
+
 
 
         // Flux manipulations

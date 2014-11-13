@@ -249,7 +249,8 @@ Foam::MRFZone::MRFZone
     ),
     origin_(coeffs_.lookup("origin")),
     axis_(coeffs_.lookup("axis")),
-    omega_(DataEntry<scalar>::New("omega", coeffs_))
+    omega_(DataEntry<scalar>::New("omega", coeffs_)),
+    centrifugal_force_density_("centrifugal_force_density",mesh_.C()*0)
 {
     if (cellZoneName_ == word::null)
     {
@@ -314,7 +315,15 @@ Foam::MRFZone::MRFZone
         }
 
         setMRFFaces();
-
+        //calculate centrifugal force density
+        const labelList& cells = mesh_.cellZones()[cellZoneID_];
+        const volVectorField& C = mesh_.C();
+        const vector Omega = this->Omega();
+        forAll(cells, i)
+        {
+            label celli = cells[i];
+            centrifugal_force_density_[celli] = Omega ^ (Omega ^ (C[celli] - origin_));
+        }
     }
 }
 
@@ -422,6 +431,42 @@ void Foam::MRFZone::addCoriolis
     }
 }
 
+void Foam::MRFZone::addRothalpy
+(
+    const volScalarField& rho,
+    fvScalarMatrix& EEqn,
+    const bool rhs
+) const
+{
+    if (cellZoneID_ == -1)
+    {
+        return;
+    }
+
+    const labelList& cells = mesh_.cellZones()[cellZoneID_];
+    const scalarField& V = mesh_.V();
+    scalarField& Esource = EEqn.source();
+    const volVectorField& U = mesh_.lookupObject<volVectorField>("U");
+    const volVectorField& cent = centrifugal_force_density_;
+    if (rhs)
+    {
+        forAll(cells, i)
+        {
+            label celli = cells[i];
+            Esource[celli] += V[celli]*rho[celli]*(U[celli]&cent[celli]);
+        }
+    }
+    else
+    {
+        forAll(cells, i)
+        {
+            label celli = cells[i];
+            Esource[celli] -= V[celli]*rho[celli]*(U[celli]&cent[celli]);
+        }
+    }
+}
+
+
 
 void Foam::MRFZone::makeRelative(volVectorField& U) const
 {
@@ -443,21 +488,24 @@ void Foam::MRFZone::makeRelative(volVectorField& U) const
         forAll(includedFaces_[patchi], i)
         {
             label patchFacei = includedFaces_[patchi][i];
-            U.boundaryField()[patchi][patchFacei] = vector::zero;
-        }
-    }
-
-    // Excluded patches
-    forAll(excludedFaces_, patchi)
-    {
-        forAll(excludedFaces_[patchi], i)
-        {
-            label patchFacei = excludedFaces_[patchi][i];
-            U.boundaryField()[patchi][patchFacei] -=
+            U.boundaryField()[patchi][patchFacei] -= 
                 (Omega
               ^ (C.boundaryField()[patchi][patchFacei] - origin_));
         }
     }
+
+    // Excluded patches
+    //do nothing here
+    /*forAll(excludedFaces_, patchi)*/
+    //{
+        //forAll(excludedFaces_[patchi], i)
+        //{
+            //label patchFacei = excludedFaces_[patchi][i];
+            //U.boundaryField()[patchi][patchFacei] -=
+                //(Omega
+              //^ (C.boundaryField()[patchi][patchFacei] - origin_));
+        //}
+    /*}*/
 }
 
 
