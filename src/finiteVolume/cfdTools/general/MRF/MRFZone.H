@@ -44,6 +44,7 @@ SourceFiles
 #include "labelList.H"
 #include "dimensionedScalar.H"
 #include "dimensionedVector.H"
+#include "volFields.H"
 #include "volFieldsFwd.H"
 #include "surfaceFields.H"
 #include "fvMatricesFwd.H"
@@ -105,6 +106,9 @@ class MRFZone
 
         //- Angular velocty (rad/sec)
         autoPtr<DataEntry<scalar> > omega_;
+
+        // omega x (omega x r)
+        volVectorField centrifugal_force_density_;
 
     // Private Member Functions
 
@@ -247,7 +251,13 @@ public:
             //- Correct the boundary velocity for the roation of the MRF region
             void correctBoundaryVelocity(volVectorField& U) const;
 
-
+            //- add zentrifugal force enrgy term
+            void addRothalpy
+                (
+                    const volScalarField& rho,
+                    fvScalarMatrix& EEqn,
+                    const bool rhs
+                ) const;
     // I-O
 
         //- Write

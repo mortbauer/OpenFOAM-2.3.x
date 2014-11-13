@@ -73,7 +73,9 @@ void Foam::fv::MRFSource::initialise()
     mrfPtr_->correctBoundaryVelocity(const_cast<volVectorField&>(U));
 
     fieldNames_.append(UName_);
-    applied_.setSize(1, false);
+    fieldNames_.append("e");
+    fieldNames_.append("h");
+    applied_.setSize(3, false);
 }
 
 
@@ -119,6 +121,17 @@ void Foam::fv::MRFSource::addSup
     mrfPtr_->addCoriolis(rho, eqn, true);
 }
 
+
+void Foam::fv::MRFSource::addSup
+(
+    const volScalarField& rho,
+    fvMatrix<scalar>& eqn,
+    const label fieldI
+)
+{
+    // Add to rhs of equation
+    mrfPtr_->addRothalpy(rho, eqn, true);
+}
 
 void Foam::fv::MRFSource::makeRelative(surfaceScalarField& phi) const
 {
