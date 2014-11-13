@@ -443,21 +443,24 @@ void Foam::MRFZone::makeRelative(volVectorField& U) const
         forAll(includedFaces_[patchi], i)
         {
             label patchFacei = includedFaces_[patchi][i];
-            U.boundaryField()[patchi][patchFacei] = vector::zero;
-        }
-    }
-
-    // Excluded patches
-    forAll(excludedFaces_, patchi)
-    {
-        forAll(excludedFaces_[patchi], i)
-        {
-            label patchFacei = excludedFaces_[patchi][i];
-            U.boundaryField()[patchi][patchFacei] -=
+            U.boundaryField()[patchi][patchFacei] -= 
                 (Omega
               ^ (C.boundaryField()[patchi][patchFacei] - origin_));
         }
     }
+
+    // Excluded patches
+    //do nothing here
+    /*forAll(excludedFaces_, patchi)*/
+    //{
+        //forAll(excludedFaces_[patchi], i)
+        //{
+            //label patchFacei = excludedFaces_[patchi][i];
+            //U.boundaryField()[patchi][patchFacei] -=
+                //(Omega
+              //^ (C.boundaryField()[patchi][patchFacei] - origin_));
+        //}
+    /*}*/
 }
 
 
