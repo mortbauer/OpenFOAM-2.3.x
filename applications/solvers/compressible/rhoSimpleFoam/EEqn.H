@@ -3,6 +3,7 @@
 
     Urel == U;
     fvOptions.makeRelative(Urel);
+    Uframe = U - Urel;
     phirel == phi;
     fvOptions.makeRelative(phirel);
 
@@ -12,7 +13,7 @@
       + (
             he.name() == "e"
           ? fvc::div(phirel, volScalarField("Ekp", 0.5*(magSqr(Urel) - magSqr(U-Urel))+ p/rho))
-          : fvc::div(phirel, volScalarField("K", 0.5*(magSqr(Urel) - magSqr(U-Urel))))
+          : fvc::div(volVectorField("K", p*Uframe))
         )
       - fvm::laplacian(turbulence->alphaEff(), he)
      ==
@@ -28,6 +29,9 @@
     EEqn.solve();
 
     volScalarField Cp = thermo.Cp();
+    Info<< "T before bounding  max/min : "
+        << max(he/Cp).value() << " "
+        << min(he/Cp).value() << endl;
     if (he.name() == "h"){
         he = Foam::min(he, TMax*Cp);
         he = Foam::max(he, TMin*Cp);
@@ -41,7 +45,7 @@
 
     thermo.correct();
 
-    Info<< "T max/min : "
+    Info<< "T final max/min : "
         << max(he/Cp).value() << " "
         << min(he/Cp).value() << endl;
 }

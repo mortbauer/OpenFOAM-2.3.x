@@ -73,8 +73,15 @@
             ),
             U
         );
+  
+    // Create rotational velocity (= omega x r)
+    volVectorField Uframe
+    (
+        "Uframe",
+        U - Urel
+    );
 
-   surfaceScalarField phirel
+    surfaceScalarField phirel
         (
             IOobject
             (
