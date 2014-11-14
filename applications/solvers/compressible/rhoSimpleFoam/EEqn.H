@@ -3,17 +3,14 @@
 
     Urel == U;
     fvOptions.makeRelative(Urel);
-    Uframe = U - Urel;
-    phirel == phi;
-    fvOptions.makeRelative(phirel);
 
     fvScalarMatrix EEqn
     (
-        fvm::div(phirel, he)
-      + (
+        fvm::div(phi, he)
+        + (
             he.name() == "e"
-          ? fvc::div(phirel, volScalarField("Ekp", 0.5*magSqr(Urel) + p/rho))
-          : fvc::div(phirel, volScalarField("K", 0.5*magSqr(Urel)))
+          ? fvc::div(phi, volScalarField("Ekp", 0.5*magSqr(Urel) + p/rho))
+          : fvc::div(phi, volScalarField("K", 0.0*magSqr(Urel)))
         )
         - fvm::laplacian(turbulence->alphaEff(), he)
      ==
