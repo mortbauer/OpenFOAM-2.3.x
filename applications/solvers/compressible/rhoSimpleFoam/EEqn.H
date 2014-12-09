@@ -9,8 +9,8 @@
         fvm::div(phi, he)
         + (
             he.name() == "e"
-          ? fvc::div(phi, volScalarField("Ekp", 0.5*magSqr(Urel) + p/rho))
-          : fvc::div(phi, volScalarField("K", 0.0*magSqr(Urel)))
+          ? fvc::div(phi, volScalarField("Ekp", 0.0*magSqr(U) + p/rho))
+          : fvc::div(phi, volScalarField("K", 0.0*magSqr(U)))
         )
         - fvm::laplacian(turbulence->alphaEff(), he)
      ==
