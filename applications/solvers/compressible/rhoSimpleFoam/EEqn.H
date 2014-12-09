@@ -3,22 +3,20 @@
 
     Urel == U;
     fvOptions.makeRelative(Urel);
-    phirel == phi;
-    fvOptions.makeRelative(phirel);
 
     fvScalarMatrix EEqn
     (
-        fvm::div(phirel, he)
-      + (
+        fvm::div(phi, he)
+        + (
             he.name() == "e"
-          ? fvc::div(phirel, volScalarField("Ekp", 0.5*(magSqr(Urel) - magSqr(U-Urel))+ p/rho))
-          : fvc::div(phirel, volScalarField("K", 0.5*(magSqr(Urel) - magSqr(U-Urel))))
+          ? fvc::div(phi, volScalarField("Ekp", 0.0*magSqr(U) + p/rho))
+          : fvc::div(phi, volScalarField("K", 0.0*magSqr(U)))
         )
-      - fvm::laplacian(turbulence->alphaEff(), he)
+        - fvm::laplacian(turbulence->alphaEff(), he)
      ==
         fvOptions(rho, he)
         // Viscous heating: note sign (devRhoReff has a minus in it)
-      - (turbulence->devRhoReff() && fvc::grad(Urel))
+        //- (turbulence->devRhoReff() && fvc::grad(Urel))
     );
 
     EEqn.relax();
@@ -41,7 +39,7 @@
 
     thermo.correct();
 
-    Info<< "T max/min : "
+    Info<< "T final max/min : "
         << max(he/Cp).value() << " "
         << min(he/Cp).value() << endl;
 }

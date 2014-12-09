@@ -97,6 +97,9 @@
     }
 
     rho = thermo.rho();
+    Info<< "rho before bounding max/min : "
+        << max(rho).value() << " "
+        << min(rho).value() << endl;
     rho = max(rho, rhoMin);
     rho = min(rho, rhoMax);
 
@@ -105,7 +108,7 @@
         rho.relax();
     }
 
-    Info<< "rho max/min : "
+    Info<< "rho final max/min : "
         << max(rho).value() << " "
         << min(rho).value() << endl;
 }

@@ -73,8 +73,15 @@
             ),
             U
         );
+  
+    // Create rotational velocity (= omega x r)
+    volVectorField Uframe
+    (
+        "Uframe",
+        U - Urel
+    );
 
-   surfaceScalarField phirel
+    surfaceScalarField phirel
         (
             IOobject
             (
@@ -86,3 +93,16 @@
             ),
             phi
         );
+
+     volScalarField ptot
+     (
+      IOobject
+      (
+       "ptot",
+       runTime.timeName(),
+       mesh,
+       IOobject::NO_READ,
+       IOobject::AUTO_WRITE
+       ),
+       p + rho * 0.5*magSqr(U)
+    );

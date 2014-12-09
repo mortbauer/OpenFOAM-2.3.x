@@ -64,6 +64,7 @@ int main(int argc, char *argv[])
             #include "UEqn.H"
             #include "EEqn.H"
             #include "pEqn.H"
+            ptot = p + 0.5*rho*magSqr(U);
         }
 
         turbulence->correct();
