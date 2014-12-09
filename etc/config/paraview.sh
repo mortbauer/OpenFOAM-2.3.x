@@ -46,9 +46,11 @@ export ParaView_DIR=/usr
 export ParaView_INCLUDE_DIR=$ParaView_DIR/include/paraview-$ParaView_MAJOR
 ParaView_LIB_DIR=$ParaView_DIR/lib/paraview-$ParaView_MAJOR
 
-export PATH=$ParaView_DIR/bin:$PATH
-export LD_LIBRARY_PATH=$ParaView_LIB_DIR:$LD_LIBRARY_PATH
-export PV_PLUGIN_PATH=$FOAM_LIBBIN/paraview-$ParaView_MAJOR
+if [ -d "$ParaView_INCLUDE_DIR" ];then
+    export PATH=$ParaView_DIR/bin:$PATH
+    export LD_LIBRARY_PATH=$ParaView_LIB_DIR:$LD_LIBRARY_PATH
+    export PV_PLUGIN_PATH=$FOAM_LIBBIN/paraview-$ParaView_MAJOR
+fi
 
 # # add in python libraries if required
     #paraviewPython=$ParaView_DIR/Utilities/VTKPythonWrapping
