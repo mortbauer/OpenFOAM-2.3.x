@@ -28,8 +28,13 @@
     EEqn.solve();
 
     volScalarField Cp = thermo.Cp();
-    he = Foam::min(he, TMax*Cp);
-    he = Foam::max(he, TMin*Cp);
+    if (he.name() == "h"){
+        he = Foam::min(he, TMax*Cp);
+        he = Foam::max(he, TMin*Cp);
+    }else{
+        he = Foam::min(he+p/rho, TMax*Cp)-p/rho;
+        he = Foam::max(he+p/rho, TMin*Cp)-p/rho;
+    }
     he.correctBoundaryConditions();
 
     fvOptions.correct(he);
