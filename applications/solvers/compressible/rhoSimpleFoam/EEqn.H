@@ -26,6 +26,9 @@
     EEqn.solve();
 
     volScalarField Cp = thermo.Cp();
+    Info<< "T before bounding  max/min : "
+        << max(he/Cp).value() << " "
+        << min(he/Cp).value() << endl;
     if (he.name() == "h"){
         he = Foam::min(he, TMax*Cp);
         he = Foam::max(he, TMin*Cp);
