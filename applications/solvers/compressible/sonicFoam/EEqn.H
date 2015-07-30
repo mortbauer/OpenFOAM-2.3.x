@@ -9,6 +9,8 @@
         fvOptions(rho, e)
     );
 
+    EEqn -= thermalDissipationEff(turbulence);
+
     EEqn.relax();
 
     fvOptions.constrain(EEqn);

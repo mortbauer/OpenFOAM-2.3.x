@@ -86,7 +86,7 @@ rotatingPressureInletOutletVelocityFvPatchVectorField
 )
 :
     pressureInletOutletVelocityFvPatchVectorField(p, iF, dict),
-    omega_(DataEntry<vector>::New("omega", dict))
+    omega_(DataEntry<vector>::New("radialVelocity", dict))
 {
     calcTangentialVelocity();
 }

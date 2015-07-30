@@ -24,9 +24,9 @@ License
 \*---------------------------------------------------------------------------*/
 #include "vtkPV4FoamReader.h"
 
-#include "pqApplicationCore.h"
-#include "pqRenderView.h"
-#include "pqServerManagerModel.h"
+//#include "pqApplicationCore.h"
+//#include "pqRenderView.h"
+//#include "pqServerManagerModel.h"
 
 // VTK includes
 #include "vtkCallbackCommand.h"
@@ -474,33 +474,33 @@ void vtkPV4FoamReader::SetShowGroupsOnly(int val)
 
 void vtkPV4FoamReader::updatePatchNamesView(const bool show)
 {
-    pqApplicationCore* appCore = pqApplicationCore::instance();
+    /*pqApplicationCore* appCore = pqApplicationCore::instance();*/
 
-    // need to check this, since our destructor calls this
-    if (!appCore)
-    {
-        return;
-    }
+    //// need to check this, since our destructor calls this
+    //if (!appCore)
+    //{
+        //return;
+    /*}*/
 
     // Server manager model for querying items in the server manager
-    pqServerManagerModel* smModel = appCore->getServerManagerModel();
+   /* pqServerManagerModel* smModel = appCore->getServerManagerModel();*/
 
-    if (!smModel || !foamData_)
-    {
-        return;
-    }
+    //if (!smModel || !foamData_)
+    //{
+        //return;
+    /*}*/
 
-    // Get all the pqRenderView instances
-    QList<pqRenderView*> renderViews = smModel->findItems<pqRenderView*>();
+    /*// Get all the pqRenderView instances*/
+    //QList<pqRenderView*> renderViews = smModel->findItems<pqRenderView*>();
 
-    for (int viewI=0; viewI < renderViews.size(); ++viewI)
-    {
-        foamData_->renderPatchNames
-        (
-            renderViews[viewI]->getRenderViewProxy()->GetRenderer(),
-            show
-        );
-    }
+    //for (int viewI=0; viewI < renderViews.size(); ++viewI)
+    //{
+        //foamData_->renderPatchNames
+        //(
+            //renderViews[viewI]->getRenderViewProxy()->GetRenderer(),
+            //show
+        //);
+    /*}*/
 
     // use refresh here?
 }

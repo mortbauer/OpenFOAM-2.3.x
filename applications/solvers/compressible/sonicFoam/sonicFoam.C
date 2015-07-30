@@ -41,6 +41,21 @@ Description
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
+// from: http://www.cfd-online.com/Forums/openfoam/76349-rhosimplefoam-loss-total-enthalpy.html 
+tmp<volScalarField> thermalDissipationEff
+(
+    const compressible::turbulenceModel& turb
+)
+{
+    tmp<volTensorField> tgradU = fvc::grad(turb.U());
+
+    return
+    (
+         turb.mu()* (tgradU() && dev(twoSymm(tgradU())))
+         + turb.rho() * turb.epsilon()
+    );
+}
+
 int main(int argc, char *argv[])
 {
     #include "setRootCase.H"

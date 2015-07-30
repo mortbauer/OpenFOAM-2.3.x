@@ -41,13 +41,13 @@ SET(
 #
 
 # Extend the auto-generated panel
-QT4_WRAP_CPP(MOC_SRCS pqPV4FoamReaderPanel.h)
+#QT4_WRAP_CPP(MOC_SRCS pqPV4FoamReaderPanel.h)
 
-ADD_PARAVIEW_OBJECT_PANEL(IFACES IFACE_SRCS
-  CLASS_NAME pqPV4FoamReaderPanel
-  XML_NAME  PV4FoamReader  # name of SourceProxy in *SM.xml
-  XML_GROUP sources
-)
+#ADD_PARAVIEW_OBJECT_PANEL(IFACES IFACE_SRCS
+  #CLASS_NAME pqPV4FoamReaderPanel
+  #XML_NAME  PV4FoamReader  # name of SourceProxy in *SM.xml
+  #XML_GROUP sources
+#)
 
 IF("${PARAVIEW_VERSION_MINOR}" EQUAL 0)
     ADD_PARAVIEW_PLUGIN(
